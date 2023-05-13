@@ -19,7 +19,7 @@ const querySchema = z.object({
 });
 
 // Await result
-const query = await useQuery(querySchema); // { name: string } OR Throws error if invalid
+const query = await useQuery(querySchema); // { name: string } OR throws error if invalid
 ```
 
 ### useSafeQuery
@@ -33,7 +33,7 @@ const querySchema = z.object({
 });
 
 // Await result
-const safeQuery = await useSafeQuery(querySchema); // { data: { name: string } | ZodError, success: boolean }
+const safeQuery = await useSafeQuery(querySchema); // { data: { name: string }, success: true } | { error: ZodError, success: false } }
 if (!safeQuery.success) return safeQuery.error; // ZodError
 safeQuery.data; // { name: string }
 ```
@@ -44,12 +44,14 @@ safeQuery.data; // { name: string }
 const ThrowingError = async () => {
   await callApi();
   const query = useQuery(querySchema) // Fails !!
+  // ...
 }
 ```
 ```typescript
 const Correct = async () => {
-  await callApi();
   const query = useQuery(querySchema) // OK !!
+  await callApi();
+  // ...
 }
 ```
 
